@@ -2,21 +2,70 @@
 <body>
     <div class="row">
         <div class="col-12 col-md-8 offset-md-2">
-            <h1 style="margin-left: 15px; margin-top: 15px;">Listing Details</h1>
+            <h1 style="margin-left: 15px; margin-top: 15px;"><%= listing.title %></h1>
             <div class="card">
                 <img src="<%= listing.image %>" class="card-img-top show-img" alt="Listing Image">
                 <div class="card-body">
-                    <h5 class="card-title"><%= listing.title %></h5>
+                    <p class="card-text p-show">Owned By: <i><%= listing.owner.username %></i></p>
                     <p class="card-text p-show"><%= listing.description %></p>
                     <p class="card-text p-show">&#8377; <%= listing.price.toLocaleString("en-IN") %></p>
                     <p class="card-text p-show"><%= listing.location %></p>
                     <p class="card-text p-show"><%= listing.country %></p>
+                    <% if(currentUser && listing.owner._id.equals(currentUser._id)){%>
                     <div style="display: flex; margin-top: 15px;">
                     <button class="btn edit-btn"><a style="color: white; text-decoration: none;" href="/listing/<%= listing._id %>/edit">Edit</a></button>
                     <form method="post" action="/listing/<%= listing._id %>?_method=DELETE" >
                         <button class="btn btn-dark">Delete</button>
                     </form>
                     </div>
+                    <% } %>
+                    
+                    <hr>
+                    <div class="col-12">
+                        <% if(currentUser) { %>
+                        <h4>Leave a Review</h4>
+                        <form action="/listing/<%= listing._id %>/reviews" method="post" class="mb-3 needs-validation" novalidate>
+                            <div class="mb-3 mt-3">
+                                <label for="rating" class="form-label">Rating</label>
+                                <input type="range" min="1" max="5" id="rating" name="review[rating]"" class=" form-range">
+                            </div>
+                            <div class="mb-3">
+                                <label for="comment" class="form-label">Comments</label>
+                                <textarea name="review[comment]" id="comment" cols="30" rows="5" class="form-control" required></textarea>
+                            </div>
+                            <button class="btn btn-outline-dark">Submit</button>
+                        </form>
+                        <hr>
+                        <% } %>
+                        <p class="fs-4 fw-bold mb-4">All Reviews</p>
+
+                            <div class="row">
+                            <% for (let review of listing.reviews) { %>
+                                <div class="col-md-6 mb-4">
+                                <div class="card border rounded-4 shadow-sm h-100 p-3" style="border-color: #dee2e6;">
+                                    <div class="card-body p-0">
+                                    
+                                    <!-- Top section: Name and Rating -->
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <h6 class="fw-semibold mb-0">@<%= review.author.username %></h6>
+                                        <span class="badge bg-primary fs-6 px-3 py-2 rounded-pill">
+                                        <%= review.rating %> ★
+                                        </span>
+                                    </div>
+
+                                    <!-- Review comment -->
+                                    <p class="text-muted fst-italic mb-3">"<%= review.comment %>"</p>
+                                    <form action="/listing/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE" method="post" class="mb-3">
+                                        <button class="btn btn-sm btn-dark">Delete</button>
+                                    </form>
+                                    </div>
+                                </div>
+                                </div>
+                            <% } %>
+                            </div>
+
+
+                    </div>   
                 </div>
             </div>
         </div>

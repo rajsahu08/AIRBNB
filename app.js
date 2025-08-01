@@ -1,10 +1,19 @@
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
-const Listing = require("./models/listing.js");
 const path = require("path");
 const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
+const ExpressError = require("./utils/ExpressError.js");
+const session = require("express-session");
+const flash = require("connect-flash");
+const passport = require("passport");
+const User = require("./models/user.js");
+const LocalStrategy = require("passport-local");
+
+const listingRouter = require("./routes/listing.js");
+const reviewRouter = require("./routes/review.js");
+const userRouter = require("./routes/user.js");
 
 app.use(express.urlencoded({extended:true}));
 app.set("view engine","ejs");
@@ -19,61 +28,60 @@ main().then(()=>{
     console.log("connected to DB");
 }).catch((err)=>{
     console.log(err);
-});
+}); 
 
 async function main(){
     await mongoose.connect(MONGO_URL);
+}
+
+const sessionOptions={
+    secret: "mysupersecretcode",
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+        httpOnly: true,
+        expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
+        maxAge: 1000 * 60 * 60 * 24 * 7
+    },
 }
 
 app.get("/",(req,res)=>{
     res.send("Hi, I am root.");
 });
 
-//Index Route
-app.get("/listing", async (req,res)=>{
-    let AllListings = await Listing.find({});
-    res.render("./listings/index.ejs",{AllListings});
-});
+app.use(session(sessionOptions));
+app.use(flash());
 
-//New Route
-app.get("/listing/new",(req,res)=>{
-    res.render("./listings/new.ejs");
-});
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
-//Show Route
-app.get("/listing/:id",async(req,res)=>{
-    let {id}=req.params;
-    const listing = await Listing.findById(id);
-    res.render("./listings/show.ejs",{listing});
-});
+app.use((req,res,next)=>{
+    res.locals.success=req.flash("success");
+    res.locals.error=req.flash("error");
+    res.locals.currentUser=req.user;
+    next();
+})
 
-//Create Route
-app.post("/listing",async(req,res)=>{
-    const newListing=new Listing(req.body.listing);
-    await newListing.save();
-    res.redirect("/listing");
-});
+// app.get("/demouser", (req,res)=>{
 
-//Edit Route
-app.get("/listing/:id/edit",async(req,res)=>{
-    let {id}=req.params;
-    const listing = await Listing.findById(id);
-    res.render("./listings/edit.ejs",{listing});
-});
+// })
+app.use("/listing", listingRouter);
+app.use("/listing/:id/reviews", reviewRouter);
+app.use("/", userRouter);
 
-//Update Route
-app.put("/listing/:id", async(req,res)=>{
-    let {id}=req.params;
-    await Listing.findByIdAndUpdate(id, {...req.body.listing});
-    res.redirect(`/listing/${id}`);
-});
+app.all("*",(req,res,next)=>{
+    next(new ExpressError(404,"Page Not Found"));
+})
 
-//Delete Route
-app.delete("/listing/:id",async(req,res)=>{
-    let {id} = req.params;
-    let deletedListing  = await Listing.findByIdAndDelete(id);
-    res.redirect("/listing");
-});
+app.use((err,req,res,next)=>{
+    let{statusCode=500,message="Something Went Wrong"}=err;
+    res.status(statusCode).render("error.ejs",{message});
+    //res.status(statusCode).send(message);
+})
+
 app.listen(8080,()=>{
     console.log("Server is listening to port 8080");
 });

@@ -5,14 +5,20 @@
             <br>
             <h3>Create a New Listing</h3>
             <br>
-            <form action="/listing" method="post">
+            <form action="/listing" method="post" novalidate class="needs-validation">
                 <div class="mb-3">
                     <label for="title" class="form-label">Enter Title</label>
-                    <input type="text" name="listing[title]" class="form-control">
+                    <input type="text" name="listing[title]" class="form-control" required>
+                    <div class="invalid-feedback">
+                        Title is Required.
+                      </div>
                 </div>
                 <div class="mb-3">
                     <label for="description" class="form-label">Enter Description</label>
-                    <textarea type="text" name="listing[description]" class="form-control"></textarea>
+                    <textarea type="text" name="listing[description]" class="form-control" required></textarea>
+                    <div class="invalid-feedback">
+                        Please enter a short description.
+                      </div>
                 </div>
                 <div class="mb-3">
                     <label for="image" class="form-label">Enter Image URL/Link</label>
@@ -21,16 +27,25 @@
                 <div class="row">
                     <div class="mb-3 col-md-4">
                         <label for="price" class="form-label">Enter Price</label>
-                        <input type="text" name="listing[price]" class="form-control">
+                        <input type="text" name="listing[price]" class="form-control" required>
+                        <div class="invalid-feedback">
+                            Enter a valid Price.
+                          </div>
                     </div>
                     <div class="mb-3 col-md-8">
                         <label for="location" class="form-label">Enter Location</label>
-                        <input type="text" name="listing[location]" class="form-control">
+                        <input type="text" name="listing[location]" class="form-control" required>
+                        <div class="invalid-feedback">
+                            Enter a valid Location.
+                          </div>
                     </div>
                 </div>
                 <div class="mb-3 col-8">
                     <label for="country" class="form-label">Enter Country</label>
-                    <input type="text" name="listing[country]" class="form-control">
+                    <input type="text" name="listing[country]" class="form-control" required>
+                    <div class="invalid-feedback">
+                        Enter a Valid Location.
+                      </div>
                 </div>
                 <button type="submit" class="btn btn-dark add-btn">Add</button>
             </form>    
