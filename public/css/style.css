@@ -97,3 +97,9 @@ body{
 .p-show{
     margin-bottom: 2px !important;
 }
+
+/* Map Styles */
+#map {
+    width: 100%;
+    height: 40vh;
+}
