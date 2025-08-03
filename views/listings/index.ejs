@@ -12,17 +12,45 @@
       margin-right: 2rem;
       margin-top: 2rem;
       opacity: 0.7;
-    }
-
-    .filter p {
-      font-size: 0.8rem;
+      cursor: pointer;
+      padding: 0.5rem 1rem;
+      border-radius: 1rem;
+      transition: all 0.3s ease;
+      position: relative;
     }
 
     .filter:hover {
       opacity: 1;
       cursor: pointer;
     }
-    .tax-toggle{
+
+    .filter p {
+      font-size: 0.8rem;
+    }
+
+    @media (max-width: 600px) {
+      .filter {
+        display: none;
+      }
+
+      .tax-toggle {
+        margin-top: 1rem;
+      }
+    }
+
+    .coming-soon-badge {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background-color: #ffc107;
+      color: #000;
+      font-size: 0.6rem;
+      padding: 2px 6px;
+      border-radius: 10px;
+      font-weight: bold;
+    }
+
+    .tax-toggle {
       border: 1px solid rgb(89, 88, 88);
       border-radius: 1rem;
       height: 2.5rem;
@@ -31,47 +59,55 @@
       display: flex;
       align-items: center;
     }
+
     .tax-info {
       display: none;
     }
   </style>
 
-
-  <!-- <h1 style="margin-left: 20px; margin-top: 15px;">All Listings</h1> -->
   <div id="filters">
-    <div class="filter">
+    <div class="filter" onclick="showComingSoon()">
+      <div class="coming-soon-badge">SOON</div>
       <div><i class="fa-solid fa-fire"></i></div>
       <p>Trending</p>
     </div>
-    <div class="filter">
+    <div class="filter" onclick="showComingSoon()">
+      <div class="coming-soon-badge">SOON</div>
       <div><i class="fa-solid fa-bed"></i></div>
       <p>Rooms</p>
     </div>
-    <div class="filter">
+    <div class="filter" onclick="showComingSoon()">
+      <div class="coming-soon-badge">SOON</div>
       <div><i class="fa-solid fa-mountain-city"></i></div>
       <p>Iconic Cities</p>
     </div>
-    <div class="filter">
+    <div class="filter" onclick="showComingSoon()">
+      <div class="coming-soon-badge">SOON</div>
       <div><i class="fa-solid fa-mountain"></i></div>
       <p>Mountains</p>
     </div>
-    <div class="filter">
+    <div class="filter" onclick="showComingSoon()">
+      <div class="coming-soon-badge">SOON</div>
       <div><i class="fa-brands fa-fort-awesome"></i></div>
       <p>Castles</p>
     </div>
-    <div class="filter">
+    <!-- <div class="filter" onclick="showComingSoon()">
+      <div class="coming-soon-badge">SOON</div>
       <div><i class="fa-solid fa-person-swimming"></i></div>
       <p>Amazing Pools</p>
     </div>
-    <div class="filter">
+    <div class="filter" onclick="showComingSoon()">
+      <div class="coming-soon-badge">SOON</div>
       <div><i class="fa-solid fa-campground"></i></div>
       <p>Camping</p>
-    </div>
-    <div class="filter">
+    </div> -->
+    <div class="filter" onclick="showComingSoon()">
+      <div class="coming-soon-badge">SOON</div>
       <div><i class="fa-brands fa-cow"></i></div>
       <p>Farms</p>
     </div>
-    <div class="filter">
+    <div class="filter" onclick="showComingSoon()">
+      <div class="coming-soon-badge">SOON</div>
       <div><i class="fa-solid fa-snowflake"></i></div>
       <p>Arctic</p>
     </div>
@@ -114,4 +150,8 @@
         }
       }
     })
+
+    function showComingSoon() {
+      alert('🎯 Filter functionality coming soon! Stay tuned for updates.');
+    }
   </script>

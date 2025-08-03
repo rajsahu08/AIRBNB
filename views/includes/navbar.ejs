@@ -12,7 +12,7 @@
 
       </ul>
       <ul class="navbar-nav ms-auto">
-        <form class="d-flex" role="search">
+        <form class="d-flex" role="search" id="searchForm">
           <input class="form-control me-2 rounded-5" type="search" placeholder="Search Destinations" aria-label="Search" />
           <button class="btn btn-outline-danger rounded-5" type="submit">Search</button>
         </form>
@@ -37,3 +37,10 @@
     </div>
   </div>
 </nav>
+
+<script>
+document.getElementById('searchForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    alert('🔍 Search functionality coming soon! Stay tuned for updates.');
+});
+</script>
